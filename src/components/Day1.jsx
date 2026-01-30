@@ -3,85 +3,102 @@ import React from 'react';
 function Day1() {
   return (
     <div>
-      {/* Header Section */}
-      <h3 style={{ color: '#38bdf8' }}>🚀 Day 1: Arrays - Second Largest Element</h3>
-      <p>
-        <strong>Problem Statement:</strong> Given an array of integers, find the second largest distinct element. 
-        If it does not exist, return -1.
-      </p>
-      <p>
-        <strong>LeetCode Reference:</strong> <span style={{ color: '#facc15' }}>Problem #215</span> (Kth Largest Element)
-      </p>
-
-      <hr style={{ borderColor: 'rgba(255,255,255,0.1)', margin: '20px 0' }} />
-
-      {/* Approach 1: Brute Force */}
-      <h4 style={{ marginTop: '20px', color: '#f472b6' }}>1️⃣ Brute Force Approach</h4>
-      <p>
-        <strong>Logic:</strong> Sort the array in ascending order. The largest element will be at the end. 
-        Traverse from the back to find the first element different from the largest.
-      </p>
-      <p><strong>Time Complexity:</strong> O(N log N) (due to sorting)</p>
+      {/* --- SECTION 1: NOTES --- */}
+      <h3 style={{ color: '#38bdf8' }}>📚 Day 1: Binary Search Notes</h3>
       
-      <pre>
-{`// Java Code (Brute Force)
-import java.util.Arrays;
+      <div style={{ background: 'rgba(255, 255, 255, 0.05)', padding: '20px', borderRadius: '10px', marginBottom: '20px' }}>
+        <h4 style={{ color: '#fff', marginTop: 0 }}>What is Binary Search?</h4>
+        <p style={{ color: '#cbd5e1' }}>
+          Binary Search is an efficient algorithm for finding an item from a <strong>sorted list</strong> of items. 
+          It works by repeatedly dividing in half the portion of the list that could contain the item, 
+          until you've narrowed down the possible locations to just one.
+        </p>
+        <ul style={{ color: '#94a3b8', lineHeight: '1.8' }}>
+          <li><strong>Condition:</strong> The array MUST be sorted.</li>
+          <li><strong>Time Complexity:</strong> O(log N) - Very fast (even for millions of items).</li>
+          <li><strong>Space Complexity:</strong> O(1) - Uses no extra memory.</li>
+        </ul>
+      </div>
 
-public class Solution {
-    public static int getSecondLargest(int[] arr) {
-        int n = arr.length;
-        if (n < 2) return -1;
+      <hr style={{ borderColor: 'rgba(255,255,255,0.1)', margin: '30px 0' }} />
 
-        // Step 1: Sort the array
-        Arrays.sort(arr);
-
-        // Step 2: Traverse from second last element
-        int largest = arr[n - 1];
-        for (int i = n - 2; i >= 0; i--) {
-            if (arr[i] != largest) {
-                return arr[i]; // Found second largest
-            }
-        }
-        return -1; // No second largest found
-    }
-}`}
-      </pre>
-
-      <hr style={{ borderColor: 'rgba(255,255,255,0.1)', margin: '20px 0' }} />
-
-      {/* Approach 2: Optimal */}
-      <h4 style={{ marginTop: '20px', color: '#4ade80' }}>2️⃣ Optimal Approach (Single Pass)</h4>
+      {/* --- SECTION 2: EXAMPLE PROBLEM (DRY RUN) --- */}
+      <h4 style={{ color: '#facc15' }}>🧮 Example Problem (Step-by-Step)</h4>
       <p>
-        <strong>Logic:</strong> Traverse the array once. Keep track of two variables: <code>largest</code> and <code>secondLargest</code>. 
-        Update them as you iterate through the numbers.
+        <strong>Input Array:</strong> <code>[2, 5, 8, 12, 16, 23, 38, 56, 72, 91]</code>
+        <br />
+        <strong>Target to Find:</strong> <code>23</code>
       </p>
-      <p><strong>Time Complexity:</strong> O(N) (Single Pass)</p>
-      <p><strong>Space Complexity:</strong> O(1)</p>
 
+      {/* Custom Table for Trace */}
+      <table style={{ width: '100%', borderCollapse: 'collapse', marginTop: '15px', fontSize: '15px', color: '#e2e8f0' }}>
+        <thead>
+          <tr style={{ borderBottom: '2px solid #38bdf8', textAlign: 'left' }}>
+            <th style={{ padding: '10px' }}>Iteration</th>
+            <th style={{ padding: '10px' }}>Low</th>
+            <th style={{ padding: '10px' }}>High</th>
+            <th style={{ padding: '10px' }}>Mid Index</th>
+            <th style={{ padding: '10px' }}>Mid Value</th>
+            <th style={{ padding: '10px' }}>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
+            <td style={{ padding: '10px' }}>1</td>
+            <td style={{ padding: '10px' }}>0</td>
+            <td style={{ padding: '10px' }}>9</td>
+            <td style={{ padding: '10px' }}>4</td>
+            <td style={{ padding: '10px' }}>16</td>
+            <td style={{ padding: '10px', color: '#f472b6' }}>16 &lt; 23 (Move Right)</td>
+          </tr>
+          <tr>
+            <td style={{ padding: '10px' }}>2</td>
+            <td style={{ padding: '10px' }}>5</td>
+            <td style={{ padding: '10px' }}>9</td>
+            <td style={{ padding: '10px' }}>7</td>
+            <td style={{ padding: '10px' }}>56</td>
+            <td style={{ padding: '10px', color: '#f472b6' }}>56 &gt; 23 (Move Left)</td>
+          </tr>
+          <tr style={{ background: 'rgba(34, 197, 94, 0.1)', borderLeft: '3px solid #22c55e' }}>
+            <td style={{ padding: '10px' }}>3</td>
+            <td style={{ padding: '10px' }}>5</td>
+            <td style={{ padding: '10px' }}>6</td>
+            <td style={{ padding: '10px' }}><strong>5</strong></td>
+            <td style={{ padding: '10px' }}><strong>23</strong></td>
+            <td style={{ padding: '10px', color: '#22c55e', fontWeight: 'bold' }}>23 == 23 (Found!)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <hr style={{ borderColor: 'rgba(255,255,255,0.1)', margin: '30px 0' }} />
+
+      {/* --- SECTION 3: CODE --- */}
+      <h4 style={{ color: '#4ade80' }}>💻 Java Solution</h4>
       <pre>
-{`// Java Code (Optimal Solution)
-public class Solution {
-    public static int getSecondLargest(int[] arr) {
-        int n = arr.length;
-        if (n < 2) return -1;
+{`public class BinarySearch {
+    public static int search(int[] nums, int target) {
+        int low = 0;
+        int high = nums.length - 1;
 
-        int largest = Integer.MIN_VALUE;
-        int secondLargest = Integer.MIN_VALUE;
+        while (low <= high) {
+            // Find the middle index
+            int mid = low + (high - low) / 2;
 
-        for (int i = 0; i < n; i++) {
-            // Case 1: Found a new largest
-            if (arr[i] > largest) {
-                secondLargest = largest;
-                largest = arr[i];
+            // Check if target is present at mid
+            if (nums[mid] == target) {
+                return mid; // Target Found
             }
-            // Case 2: Found a candidate for second largest
-            else if (arr[i] > secondLargest && arr[i] != largest) {
-                secondLargest = arr[i];
+
+            // If target is greater, ignore left half
+            if (nums[mid] < target) {
+                low = mid + 1;
+            }
+            // If target is smaller, ignore right half
+            else {
+                high = mid - 1;
             }
         }
-
-        // Check if secondLargest was actually updated
-        return (secondLargest == Integer.MIN_VALUE) ? -1 : secondLargest;
+        return -1; // Target not found
     }
 }`}
       </pre>
